@@ -1,0 +1,15 @@
+# compiled files
+bin/
+target/
+build/
+
+# Eclipse workspace
+.metadata/
+.recommenders/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# logs
+*.log
