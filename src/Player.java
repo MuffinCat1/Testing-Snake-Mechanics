@@ -27,7 +27,6 @@ public class Player {
         this.x = x;
         this.y = y;
         DrawPlayer();
-        grid.UpdateGrid();
 	}
 	
 }

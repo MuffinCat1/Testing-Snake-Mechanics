@@ -5,9 +5,15 @@ import javax.swing.JFrame;
 
 public class Main {
 	
+	public static enum Direction {
+	    UP, DOWN, LEFT, RIGHT
+	}
+	
 	public static int P_X;	
 	public static int P_Y;	
 
+	public static volatile Direction dir = Direction.RIGHT;
+	
 	public static void main(String[] args) throws InterruptedException {
 		
 		
@@ -29,40 +35,85 @@ public class Main {
 		frame.addKeyListener(new KeyListener() {
 		    @Override
 		    public void keyPressed(KeyEvent e) {
-		        switch(e.getKeyCode()) {
+		    	
+		    	
+		    	switch(e.getKeyCode()) {
 
-		            case KeyEvent.VK_W:
-		            	if (P_Y == 0) {
-		            		//TODO handle movement
-		            	}
-		            	--P_Y;
-		            	player.Move(P_X, --P_Y);
-		                break;
+		        case KeyEvent.VK_W:
+		            dir = Direction.UP;
+		            break;
 
-		            case KeyEvent.VK_S:
-		            	player.Move(P_X, ++P_Y);
-		                break;
+		        case KeyEvent.VK_S:
+		            dir = Direction.DOWN;
+		            break;
 
-		            case KeyEvent.VK_D:
-		            	player.Move(++P_X, P_Y);
-		                break;
+		        case KeyEvent.VK_D:
+		            dir = Direction.RIGHT;
+		            break;
 
-		            case KeyEvent.VK_A:
-		            	player.Move(--P_X, P_Y);
-		                break;
+		        case KeyEvent.VK_A:
+		            dir = Direction.LEFT;
+		            break;
 
-		            case KeyEvent.VK_R:
-		                System.exit(0);
-		                break;
-		        }
+		        case KeyEvent.VK_R:
+		            System.exit(0);
+		            break;
+		    	}	
+		    	
 		    }
 
-		    public void keyTyped(KeyEvent e) {}
-		    public void keyReleased(KeyEvent e) {}
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
 		});
 		
 		frame.setFocusable(true);
 		frame.requestFocus();
+		
+		while (true) {
+	    	switch(dir) {
+			
+            case UP:
+            	if (P_Y == 1) {
+            		P_Y = grid.height-1;
+            	}
+            	P_Y--;
+                break;
+
+            case DOWN:
+            	if (P_Y == grid.height-2) {
+            		P_Y = 0;
+            	}
+            	P_Y++;
+                break;
+
+            case RIGHT:
+            	if (P_X == grid.width-2) {
+            		P_X = 0;
+            	}
+            	P_X++;
+                break;
+
+            case LEFT:
+            	if (P_X == 1) {
+            		P_X = grid.width-1;
+            	}
+            	P_X--;
+                break;
+	    	}
+	    	
+	    	player.Move(P_X, P_Y);
+	    	grid.UpdateGrid();
+	    	Thread.sleep(100);
+		}
 	}
 
 }
